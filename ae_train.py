@@ -244,10 +244,27 @@ if __name__ == '__main__':
         model = Autoencoder2()
     elif Choose == 3:
         model = DAE()
-    else :
+    elif Choose == 4:
         model = VAE(x_dim=784, h_dim1=512, h_dim2=256, z_dim=2)
+    else:
+        model = Autoencoder1()#nothing
+        # 1) generator
+        encoder = AAE_Encoder()
+        decoder = AAE_Decoder()
+        # 2) discriminator
+        discriminator = Discriminator()
+        print(encoder)
+        print(decoder)
+        print(discriminator)
+        # loss
+        adversarial_loss = nn.BCELoss()
+        reconstruction_loss = nn.MSELoss()
+        # optimizer
+        optimizer_G = torch.optim.Adam(itertools.chain(encoder.parameters(), decoder.parameters()), lr=Lr_Rate,
+                                       betas=(0.5, 0.999))
+        optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=Lr_Rate, betas=(0.5, 0.999))
     criterion = nn.MSELoss()
-    print(model)
+    # print(model)
     # 优化器定义
     optimizer = optim.Adam(model.parameters(), lr=Lr_Rate)
 
@@ -267,22 +284,6 @@ if __name__ == '__main__':
     # train_loss = dae_training(model, train_loader, criterion, optimizer, Epochs)
     # DAE_test_image_reconstruct(model, test_loader)
     #AAE
-    #   # 1) generator
-    # encoder = AAE_Encoder()
-    # decoder = AAE_Decoder()
-    #     # 2) discriminator
-    # discriminator = Discriminator()
-    # print(encoder)
-    # print(decoder)
-    # print(discriminator)
-    # # loss
-    # adversarial_loss = nn.BCELoss()
-    # reconstruction_loss = nn.MSELoss()
-    #
-    # # optimizer
-    # optimizer_G = torch.optim.Adam(itertools.chain(encoder.parameters(), decoder.parameters()), lr=Lr_Rate,
-    #                                betas=(0.5, 0.999))
-    # optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=Lr_Rate, betas=(0.5, 0.999))
     # train_loss = aae_training(encoder,decoder,train_loader,adversarial_loss,reconstruction_loss,optimizer_D,optimizer_G,Epochs)
     # AAE_test_image_reconstruct(encoder,decoder,test_loader)
 
